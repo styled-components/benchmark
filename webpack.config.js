@@ -1,5 +1,4 @@
 const { join } = require('path');
-const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -12,7 +11,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'react-native': join(__dirname, '/mocks/react-native'),
+      'react-native$': join(__dirname, 'mocks/react-native'),
     },
   },
   module: {
@@ -20,12 +19,4 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
-  ],
 };

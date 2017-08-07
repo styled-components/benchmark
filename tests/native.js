@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native'; // eslint-disable-line
 import { create as render } from 'react-test-renderer';
-import styled, { resetStyleCache } from 'styled-components/native';
+import styled from 'styled-components/native';
+import { resetStyleCache } from 'styled-components/lib/models/InlineStyle';
 import cssta from 'cssta/native';
-
 
 export default {
   'simple component': {
@@ -46,7 +46,7 @@ export default {
       const Component = cssta(View)`
         color: black;
 
-        [danger] {
+        &[@danger] {
           color: red;
         }
       `;
@@ -69,10 +69,10 @@ export default {
       const Component = styled(View)`
         color: red;
         flex: 1;
-        font: bold 12/14 "Helvetica";
-        margin: 1 2;
-        padding: 3 4;
-        border: 1 solid black;
+        font: bold 12px/14px "Helvetica";
+        margin: 1px 2px;
+        padding: 3px 4px;
+        border: 1px solid black;
       `;
 
       render(<Component />);
@@ -98,10 +98,10 @@ export default {
       const Component = styled(View)`
         color: ${props => (props.danger ? 'red' : 'black')};
         flex: 1;
-        font: bold 12/14 "Helvetica";
-        margin: 1 2;
-        padding: 3 4;
-        border: 1 solid black;
+        font: bold 12px/14px "Helvetica";
+        margin: 1px 2px;
+        padding: 3px 4px;
+        border: 1px solid black;
       `;
 
       const instance = render(<Component />);
@@ -122,7 +122,7 @@ export default {
         padding: 3px 4px;
         border: 1px solid black;
 
-        [danger] {
+        &[@danger] {
           color: red;
         }
       `;

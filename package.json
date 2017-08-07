@@ -6,15 +6,15 @@
   "dependencies": {
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
-    "babel-plugin-cssta": "^0.3.0",
-    "babel-preset-latest": "^6.22.0",
+    "babel-plugin-cssta": "^0.7.0",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.22.0",
     "benchmark": "^2.1.3",
     "console.table": "^0.8.0",
     "cssta": "^0.7.0",
     "eslint": "^3.15.0",
+    "microtime": "^2.1.6",
     "react": "^15.4.2",
-    "react-native": "^0.47.1",
     "react-test-renderer": "^15.4.2",
     "styled-components": "^2.1.2",
     "webpack": "^2.2.1"
@@ -22,8 +22,6 @@
   "devDependencies": {
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
-    "babel-plugin-cssta": "^0.3.0",
-    "babel-preset-latest": "^6.22.0",
     "eslint": "^3.15.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
@@ -32,7 +30,9 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
-    "start": "echo '(1/2) Compiling'; ./node_modules/.bin/webpack --config ./webpack.config.js > /dev/null; echo '(2/2) Benchmarking'; node ./index.js"
+    "benchmark": "node index.js",
+    "compile": "webpack -p --config ./webpack.config.js",
+    "start": "echo '(1/2) Compiling'; npm run compile; echo '(2/2) Benchmarking'; npm run benchmark"
   },
   "keywords": [],
   "author": "",

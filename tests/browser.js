@@ -3,7 +3,6 @@ import { create as render } from 'react-test-renderer';
 import styled from 'styled-components';
 import cssta from 'cssta';
 
-
 export default {
   'simple component': {
     styled: () => {
@@ -41,7 +40,7 @@ export default {
       const Component = cssta.div`
         color: black;
 
-        [danger] {
+        &[danger] {
           color: red;
         }
       `;
@@ -113,7 +112,7 @@ export default {
         padding: 3px 4px;
         border: 1px solid black;
 
-        [danger] {
+        &[danger] {
           color: red;
         }
       `;
