@@ -14,6 +14,7 @@
     "cssta": "^0.3.0",
     "eslint": "^3.15.0",
     "react": "^15.4.2",
+    "react-native": "^0.47.1",
     "react-test-renderer": "^15.4.2",
     "styled-components": "^1.4.3",
     "webpack": "^2.2.1"
