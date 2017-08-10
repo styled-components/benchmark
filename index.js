@@ -1,7 +1,8 @@
 const Benchmark = require('benchmark');
-require('console.table'); // eslint-disable-line
 const nativeTests = require('./compiled/native').default;
 const browserTests = require('./compiled/browser').default;
+
+require('console.table'); // eslint-disable-line
 
 const runSuite = (suiteName, tests) => {
   const suite = new Benchmark.Suite();
@@ -19,6 +20,8 @@ const runSuite = (suiteName, tests) => {
   });
 
   const projectNames = Array.from(projectNamesSet);
+
+  suite.on('error', err => console.error(err));
 
   suite.on('complete', () => {
     const suiteResults = Array.from(suite);
