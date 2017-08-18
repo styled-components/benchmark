@@ -2,6 +2,7 @@
   "presets": [["env", { "modules": false }], "react"],
   "plugins": [
     ["babel-plugin-cssta", { "output": "/dev/null" }],
+    ["babel-plugin-styled-components", { "preprocess": true }],
     "emotion/babel"
   ]
 }
