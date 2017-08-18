@@ -1,4 +1,7 @@
 {
   "presets": [["env", { "modules": false }], "react"],
-  "plugins": [["babel-plugin-cssta", { "output": "/dev/null" }]]
+  "plugins": [
+    ["babel-plugin-cssta", { "output": "/dev/null" }],
+    "emotion/babel"
+  ]
 }
