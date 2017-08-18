@@ -7,6 +7,8 @@ import cssta from 'cssta';
 // https://github.com/tkh44/emotion/issues/267
 import styled from 'emotion/react';
 
+import glamorous from 'glamorous';
+
 export default {
   'simple component': {
     styled: () => {
@@ -27,6 +29,13 @@ export default {
       const Component = styled.div`
         color: red;
       `;
+
+      render(<Component />);
+    },
+    glamorous: () => {
+      const Component = glamorous.div({
+        color: 'red',
+      });
 
       render(<Component />);
     },
@@ -79,6 +88,20 @@ export default {
       instance.update(<Component />);
       instance.update(<Component danger />);
     },
+    glamorous: () => {
+      const Component = glamorous.div(p => ({
+        color: p.danger ? 'red' : 'black',
+      }));
+
+      const instance = render(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+    },
   },
 
   'prop shorthands': {
@@ -115,6 +138,18 @@ export default {
         padding: 3px 4px;
         border: 1px solid black;
       `;
+
+      render(<Component />);
+    },
+    glamorous: () => {
+      const Component = glamorous.div({
+        color: 'red',
+        flex: 1,
+        font: 'bold 12px/14px "Helvetica"',
+        margin: '1px 2px',
+        padding: '3px 4px',
+        border: '1px solid black',
+      });
 
       render(<Component />);
     },
@@ -172,6 +207,27 @@ export default {
         padding: 3px 4px;
         border: 1px solid black;
       `;
+
+      const instance = render(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+      instance.update(<Component />);
+      instance.update(<Component danger />);
+    },
+    glamorous: () => {
+      const Component = glamorous.div({
+        color: 'red',
+        flex: 1,
+        font: 'bold 12px/14px "Helvetica"',
+        margin: '1px 2px',
+        padding: '3px 4px',
+        border: '1px solid black',
+      }, p => ({
+        color: p.danger ? 'red' : 'black',
+      }));
 
       const instance = render(<Component />);
       instance.update(<Component danger />);

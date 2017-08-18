@@ -18,6 +18,8 @@
     "cssta": "^0.7.0",
     "emotion": "^7.0.13",
     "eslint": "^3.15.0",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.2.0",
     "microtime": "^2.1.6",
     "react": "^15.4.2",
     "react-test-renderer": "^15.4.2",
