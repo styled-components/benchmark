@@ -6,6 +6,7 @@ module.exports = {
         "import"
     ],
     "rules": {
+        "no-console": 0,
         "react/jsx-filename-extension": [0],
     }
 };
