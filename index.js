@@ -21,7 +21,7 @@ const runSuite = (suiteName, tests) => {
 
   const projectNames = Array.from(projectNamesSet);
 
-  suite.on('error', err => console.error(err));
+  suite.on('error', err => console.error(err) && suite.abort());
 
   suite.on('complete', () => {
     const suiteResults = Array.from(suite);
