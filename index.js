@@ -1,8 +1,7 @@
 const Benchmark = require('benchmark');
 const nativeTests = require('./compiled/native').default;
 const browserTests = require('./compiled/browser').default;
-
-require('console.table');
+const AsciiTable = require('ascii-table');
 
 const runSuite = (suiteName, tests) => {
   const suite = new Benchmark.Suite(suiteName, {
@@ -11,6 +10,7 @@ const runSuite = (suiteName, tests) => {
 
   const testNames = Object.keys(tests);
   const projectNamesSet = new Set();
+  const table = new AsciiTable(suiteName);
 
   const getRunName = (testName, projectName) => `${testName}: ${projectName}`;
 
@@ -23,12 +23,12 @@ const runSuite = (suiteName, tests) => {
 
   const projectNames = Array.from(projectNamesSet);
 
+  table.setHeading('', ...projectNames);
+
   suite.on('error', err => console.error(err.target.error) && suite.abort());
 
   suite.on('complete', () => {
     const suiteResults = Array.from(suite);
-
-    const header = [''].concat(projectNames);
     const rows = testNames.map(testName => (
       [testName].concat(projectNames.map((projectName) => {
         const runName = getRunName(testName, projectName);
@@ -39,8 +39,9 @@ const runSuite = (suiteName, tests) => {
       }))
     ));
 
-    console.log(`Results for ${suiteName}`);
-    console.table(header, rows);
+    rows.forEach(row => table.addRow(row));
+
+    console.log(table.toString());
   });
 
   suite.run();
