@@ -180,7 +180,7 @@ export default {
     },
   },
 
-  'theming + dynamic styles + contextual selector': {
+  'theming + dynamic styles': {
     styled: () => {
       const Ancestor = styledSc.div`
         color: red;
@@ -194,10 +194,6 @@ export default {
       const Parent = styledSc.div`
         border: 1px solid ${p => p.theme.borderColor};
         color: ${p => p.color};
-
-        ${Child} {
-          font-family: monospace;
-        }
       `;
 
       const theme = {
@@ -240,10 +236,6 @@ export default {
       const Parent = withTheme(styled.div`
         border: 1px solid ${p => p.theme.borderColor};
         color: ${p => p.color};
-
-        ${Child} {
-          font-family: monospace;
-        }
       `);
 
       const theme = {
@@ -283,15 +275,9 @@ export default {
         'font-size': p.fontSize,
       }));
 
-      // recommended in https://github.com/kentcdodds/glamorous-website/issues/222#issuecomment-321032207
-      Child.className = 'foo-bar';
-
       const Parent = glamorous.div(p => ({
         border: `1px solid ${p.theme.borderColor}`,
         color: p.color,
-        [`& ${Child.className}`]: {
-          'font-family': 'monospace',
-        },
       }));
 
       const theme = {
@@ -311,7 +297,7 @@ export default {
               <Child fontSize={useVariant ? 10 : 12} />
             </Parent>
           </Ancestor>
-        </GlamorousThemeProvider>
+        </GlamorousThemeProvider>,
       );
 
       dynamicRender();
