@@ -1,4 +1,5 @@
 const { join } = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -19,4 +20,7 @@ module.exports = {
       { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
     ],
   },
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+  ],
 };

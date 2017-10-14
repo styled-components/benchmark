@@ -1,48 +1,90 @@
 const Benchmark = require('benchmark');
+const AsciiTable = require('ascii-table');
+const progress = require('pace');
 const nativeTests = require('./compiled/native').default;
 const browserTests = require('./compiled/browser').default;
 
-require('console.table'); // eslint-disable-line
+function getTotalTestCount(suites) {
+  let total = 0;
 
-const runSuite = (suiteName, tests) => {
-  const suite = new Benchmark.Suite();
-
-  const testNames = Object.keys(tests);
-  const projectNamesSet = new Set();
-
-  const getRunName = (testName, projectName) => `${testName}: ${projectName}`;
-
-  testNames.forEach((testName) => {
-    Object.keys(tests[testName]).forEach((projectName) => {
-      projectNamesSet.add(projectName);
-      suite.add(getRunName(testName, projectName), tests[testName][projectName]);
+  Object.values(suites).forEach((suite) => {
+    Object.keys(suite).forEach((test) => {
+      Object.keys(suite[test]).forEach(() => {
+        total += 1;
+      });
     });
   });
 
-  const projectNames = Array.from(projectNamesSet);
+  return total;
+}
 
-  suite.on('error', err => console.error(err));
+function runSuites(suites) {
+  const bar = progress(getTotalTestCount(suites));
 
-  suite.on('complete', () => {
-    const suiteResults = Array.from(suite);
+  function runSuite(suiteName, tests) {
+    return new Promise((resolve) => {
+      const suite = new Benchmark.Suite(suiteName, {
+        minSamples: 50,
+      });
 
-    const header = [''].concat(projectNames);
-    const rows = testNames.map(testName => (
-      [testName].concat(projectNames.map((projectName) => {
-        const runName = getRunName(testName, projectName);
-        const run = suiteResults.find(run => run.name === runName); // eslint-disable-line
-        return run
-          ? `${(run.stats.mean * 1000).toFixed(3)}±${(run.stats.deviation * 1000).toFixed(3)}ms`
-          : '-';
-      }))
-    ));
+      const testNames = Object.keys(tests);
+      const projectNamesSet = new Set();
 
-    console.log(`Results for ${suiteName}`);
-    console.table(header, rows);
-  });
+      const getRunName = (testName, projectName) => `${testName}: ${projectName}`;
 
-  suite.run();
-};
+      testNames.forEach((testName) => {
+        Object.keys(tests[testName]).forEach((projectName) => {
+          projectNamesSet.add(projectName);
+          suite.add(getRunName(testName, projectName), tests[testName][projectName]);
+        });
+      });
 
-runSuite('native', nativeTests);
-runSuite('browser', browserTests);
+      const projectNames = Array.from(projectNamesSet);
+
+      /**
+      * something in the dep tree is fubaring the string "styled-components"
+      * when used as a suite key
+      */
+      const projectNamesWithVersions = projectNames.map(
+        // eslint-disable-next-line
+        lib => `${lib} (v${require(`${lib === 'styled' ? 'styled-components' : lib}/package.json`).version})`
+      );
+
+      const table = new AsciiTable(suiteName);
+
+      table.setHeading('', ...projectNamesWithVersions);
+
+      suite.on('cycle', () => bar.op());
+
+      suite.on('error', err => console.error(err.target.error) && suite.abort());
+
+      suite.on('complete', () => {
+        const suiteResults = Array.from(suite);
+        const rows = testNames.map(testName => (
+          [testName].concat(projectNames.map((projectName) => {
+            const runName = getRunName(testName, projectName);
+            const run = suiteResults.find(run => run.name === runName); // eslint-disable-line
+            return run
+              ? `${(run.stats.mean * 1000).toFixed(3)}±${(run.stats.deviation * 1000).toFixed(3)}ms`
+              : '-';
+          }))
+        ));
+
+        rows.forEach(row => table.addRow(row));
+
+        resolve(table.toString());
+      });
+
+      suite.run();
+    });
+  }
+
+  const results = Object.keys(suites).map(suiteName => runSuite(suiteName, suites[suiteName]));
+
+  results.forEach(async result => console.log(await result));
+}
+
+runSuites({
+  browser: browserTests,
+  native: nativeTests,
+});
