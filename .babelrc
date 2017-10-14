@@ -2,6 +2,6 @@
   "presets": [["env", { "modules": false }], "react"],
   "plugins": [
     ["babel-plugin-styled-components", { "preprocess": true }],
-    "emotion/babel"
+    "emotion"
   ]
 }

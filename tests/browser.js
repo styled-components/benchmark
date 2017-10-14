@@ -4,8 +4,8 @@ import styledSc, { ThemeProvider as StyledThemeProvider } from 'styled-component
 
 // this currently needs to be called "styled" due to this bug
 // https://github.com/tkh44/emotion/issues/267
-import styled from 'emotion/react';
-import { ThemeProvider, withTheme } from 'theming';
+import styled from 'react-emotion';
+import { ThemeProvider } from 'emotion-theming';
 
 import glamorous, { ThemeProvider as GlamorousThemeProvider } from 'glamorous';
 
@@ -228,15 +228,15 @@ export default {
         color: red;
       `;
 
-      const Child = withTheme(styled.div`
+      const Child = styled.div`
         background-color: ${p => p.theme.backgroundColor};
         font-size: ${p => p.fontSize}px;
-      `);
+      `;
 
-      const Parent = withTheme(styled.div`
+      const Parent = styled.div`
         border: 1px solid ${p => p.theme.borderColor};
         color: ${p => p.color};
-      `);
+      `;
 
       const theme = {
         backgroundColor: 'cornflowerblue',
